@@ -5,5 +5,6 @@ import SvgIcon from '@/components/SvgIcon'// svg component
 Vue.component('svg-icon', SvgIcon)
 
 const req = require.context('./svg', false, /\.svg$/)
+// 将svg目录下的所有.svg后缀的文档全部引入到项目中
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 requireAll(req)
