@@ -64,6 +64,7 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Login',
@@ -100,6 +101,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['user/login']),
     showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -110,19 +112,26 @@ export default {
         this.$refs.password.focus()
       })
     },
+    // 登录
     handleLogin () {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+      // 表单手动校验
+      this.$refs.loginForm.validate(async isOk => {
+        if (isOk) {
+          try {
+            this.loading = true
+            console.log(this.loginForm)
+            // 通过量额校验 才去调用action
+            await this['user/login'](this.loginForm)
+            // async函数实际是一个promise对象
+            // 跳转首页
+            this.$router.push('/')
+          } catch (error) {
+            // 失败了打印异常
+            console.log(error)
+          } finally {
+            // 关闭按钮加载状态
             this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
+          }
         }
       })
     }

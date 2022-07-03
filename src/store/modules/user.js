@@ -3,7 +3,9 @@ import {
   setToken,
   removeToken
 } from '@/utils/auth'
-import login from '@/api/user'
+import {
+  login
+} from '@/api/user'
 
 const state = {
   token: getToken() // 设置token 初始化的时候，优先从缓存获取
