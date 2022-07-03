@@ -1,5 +1,9 @@
 import axios from 'axios'
-const service = axios.create()
+const service = axios.create({
+  // 当执行npm run dev => .env.development => /api => 跨域代理
+  baseURL: process.env.VUE_APP_BASE_API,
+  timeout: 5000 // 设置超时时间
+})
 service.interceptors.request.use()
 service.interceptors.response.use()
 export default service
