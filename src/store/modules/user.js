@@ -22,13 +22,9 @@ const mutations = {
 const actions = {
   async login(context, data) {
     // 调用登录接口
-    const {
-      data: res
-    } = await login(data)
+    const res = await login(data)
     // 如果成功 设置token
-    if (res.success) {
-      context.commit('setToken', res.data)
-    }
+    context.commit('setToken', res.data)
   }
 }
 
