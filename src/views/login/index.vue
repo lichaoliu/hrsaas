@@ -119,7 +119,6 @@ export default {
         if (isOk) {
           try {
             this.loading = true
-            console.log(this.loginForm)
             // 通过量额校验 才去调用action
             await this['user/login'](this.loginForm)
             // async函数实际是一个promise对象
