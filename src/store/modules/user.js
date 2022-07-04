@@ -1,7 +1,8 @@
 import {
   getToken,
   setToken,
-  removeToken
+  removeToken,
+  setTimeStamp
 } from '@/utils/auth'
 import {
   login
@@ -17,6 +18,7 @@ const mutations = {
     setToken(token)
   },
   removeToken(state) {
+    console.log('=========')
     state.token = null
     removeToken()
   }
@@ -26,7 +28,12 @@ const actions = {
     // 调用登录接口
     const res = await login(data)
     // 如果成功 设置token
-    context.commit('setToken', res.data)
+    context.commit('setToken', res)
+    // 设置token过期时间
+    setTimeStamp()
+  },
+  logout(context) {
+    context.commit('removeToken')
   }
 }
 
