@@ -5,11 +5,14 @@ import {
   setTimeStamp
 } from '@/utils/auth'
 import {
-  login
+  login,
+  getUserInfo,
+  getUserDetailById
 } from '@/api/user'
 
 const state = {
-  token: getToken() // 设置token 初始化的时候，优先从缓存获取
+  token: getToken(), // 设置token 初始化的时候，优先从缓存获取
+  userInfo: {}
 }
 const mutations = {
   setToken(state, token) {
@@ -18,9 +21,14 @@ const mutations = {
     setToken(token)
   },
   removeToken(state) {
-    console.log('=========')
     state.token = null
     removeToken()
+  },
+  setUserInfo(state, res) {
+    state.userInfo = res
+  },
+  removeUserInfo(state) {
+    state.userInfo = {}
   }
 }
 const actions = {
@@ -34,6 +42,18 @@ const actions = {
   },
   logout(context) {
     context.commit('removeToken')
+  },
+  // 设置用户信息
+  async getUserInfo(context) {
+    const res = await getUserInfo()
+    const baseInfo = await getUserDetailById(res.userId)
+    const full = {
+      ...res,
+      ...baseInfo
+    }
+    context.commit('setUserInfo', full)
+    // 返回数据 给后续权限用
+    return full
   }
 }
 
