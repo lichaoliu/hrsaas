@@ -42,6 +42,7 @@ const actions = {
   },
   logout(context) {
     context.commit('removeToken')
+    context.commit('removeUserInfo')
   },
   // 设置用户信息
   async getUserInfo(context) {
