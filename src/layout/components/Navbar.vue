@@ -66,6 +66,7 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout () {
+      // 写不写await 都可以，方法不是异步的
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
