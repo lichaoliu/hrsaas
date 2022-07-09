@@ -13,6 +13,8 @@
                       :tree-node="data"
                       @delDepts="getDepartments" />
         </el-tree>
+        <!-- 放置新增弹层组件 -->
+        <AddDept />
       </el-card>
     </div>
   </div>
@@ -22,9 +24,11 @@
 import TreeTools from './components/tree-tools.vue'
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils/index'
+import AddDept from '@/views/departments/components/add-dept.vue'
 export default {
   components: {
-    TreeTools
+    TreeTools,
+    AddDept
   },
   data () {
     return {
