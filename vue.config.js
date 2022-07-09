@@ -40,8 +40,14 @@ module.exports = {
     proxy: {
       // 当我们的本地的请求 有/api的时候，就会代理我们的请求地址向另外一个服务器发出请求
       '/api': {
-        target: 'http://ihrm-java.itheima.net/', // 跨域请求的地址
-        changeOrigin: true // 只有这个值为true的情况下 才表示开启跨域
+        target: 'http://localhost:9091/', // 跨域请求的地址
+        changeOrigin: true, // 只有这个值为true的情况下 才表示开启跨域
+        pathRewrite: { // 这个重写不可省略！因为我们真正请求的地址并不含 /api
+          '^/api': ''
+          /* 当我们在浏览器中看到请求的地址为：http://localhost:8080/api/data/getdata 时
+          因为重写了 /api ，所以实际上访问的地址是：http://x.x.x.x:x/data/getdata，
+          */
+        }
       }
     }
   },
