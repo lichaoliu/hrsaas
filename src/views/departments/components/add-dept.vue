@@ -113,6 +113,8 @@ export default {
         if (isOk) {
           await addDepartments({ ...this.formData, pid: this.treeNode.id })
           this.$emit('addDepts')
+          // emit语法糖 update:props名称
+          this.$emit('update:showDialog', false)
         }
       })
     }
