@@ -1,6 +1,7 @@
 <template>
   <el-dialog title="新增部门"
-             :visible="showDialog">
+             :visible="showDialog"
+             @close="btnCancel">
     <el-form ref="deptForm"
              label-width="120px"
              :model="formData"
@@ -42,7 +43,8 @@
             type="flex"
             justify="center">
       <el-col :span="6">
-        <el-button size="small">取 消</el-button>
+        <el-button size="small"
+                   @click="btnCancel">取 消</el-button>
         <el-button size="small"
                    type="primary"
                    @click="btnOK">确 定</el-button>
@@ -51,7 +53,7 @@
   </el-dialog>
 </template>
 <script>
-import { getDepartments, addDepartments } from '@/api/departments'
+import { getDepartments, addDepartments, getDepartDetail } from '@/api/departments'
 // import { getEmployeeSimple } from '@/api/employees'
 
 export default {
@@ -117,6 +119,15 @@ export default {
           this.$emit('update:showDialog', false)
         }
       })
+    },
+    btnCancel () {
+      this.$emit('update:showDialog', false)
+      // this.showDialog = false
+      this.$refs.deptForm.resetFields()
+    },
+    // 编辑 获取部门信息
+    async getDepartDetail (id) {
+      this.formData = await getDepartDetail(id)
     }
   }
 }

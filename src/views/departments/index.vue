@@ -13,10 +13,12 @@
           <tree-tools slot-scope="{ data }"
                       :tree-node="data"
                       @delDepts="getDepartments"
-                      @addDepts="addDepts" />
+                      @addDepts="addDepts"
+                      @editDepts="editDepts" />
         </el-tree>
         <!-- 放置新增弹层组件 -->
-        <AddDept :show-dialog="showDialog"
+        <AddDept ref="addDept"
+                 :show-dialog="showDialog"
                  :tree-node="node"
                  :show-dialog.sync="showDialog"
                  @addDepts="getDepartments" />
@@ -61,6 +63,12 @@ export default {
       this.showDialog = true
       // 记录要添加部门的 父部门
       this.node = node
+    },
+    editDepts (node) {
+      this.showDialog = true
+      this.node = node
+      // 获取部门信息
+      this.$refs.addDept.getDepartDetail(node.id)
     }
   }
 }

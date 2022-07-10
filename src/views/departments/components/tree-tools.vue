@@ -49,7 +49,8 @@ export default {
         // 显示新增部门弹层
         this.$emit('addDepts', this.treeNode)
       } else if (type === 'edit') {
-        alert(type)
+        // 编辑部门信息
+        this.$emit('editDepts', this.treeNode)
       } else {
         this.$confirm('确定要删除该部门吗', '提示', {
           confirmButtonText: '确定',
