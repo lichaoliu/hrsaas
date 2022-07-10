@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增部门"
+  <el-dialog :title="showTitle"
              :visible="showDialog"
              @close="btnCancel">
     <el-form ref="deptForm"
@@ -53,7 +53,7 @@
   </el-dialog>
 </template>
 <script>
-import { getDepartments, addDepartments, getDepartDetail } from '@/api/departments'
+import { getDepartments, addDepartments, getDepartDetail, updateDepartments } from '@/api/departments'
 // import { getEmployeeSimple } from '@/api/employees'
 
 export default {
@@ -73,13 +73,25 @@ export default {
     const checkNameRepeat = async (rule, value, callback) => {
       // 先要获取最新的组织架构数据
       const { depts } = await getDepartments()
-      const isRepeat = depts.filter(x => x.pid === this.treeNode.id).some(x => x.name === value)
+      let isRepeat = false
+      if (this.formData.id) {
+        // 编辑部门 验证除了自己以为是否还有相同的名字
+        isRepeat = depts.filter(x => x.pid === this.treeNode.pid && x.id !== this.formData.id).some(x => x.name === value)
+      } else {
+        isRepeat = depts.filter(x => x.pid === this.treeNode.id).some(x => x.name === value)
+      }
       isRepeat ? callback(new Error(`同级部门下已经有${value}的部门了`)) : callback()
     }
     // 检查部门编码是否重复
     const checkCodeRepeat = async (rule, value, callback) => {
       const { depts } = await getDepartments()
-      const isRepeat = depts.some(x => x.code === this.treeNode.code)
+      let isRepeat = false
+      if (this.formData.id) {
+        isRepeat = depts.some(item => item.id !== this.formData.id && item.code === value && value)
+      } else {
+        isRepeat = depts.some(item => item.code === value && value)
+      }
+      console.log(isRepeat)
       isRepeat ? callback(new Error(`同级部门下已经有${value}的部门了`)) : callback()
     }
     return {
@@ -104,6 +116,11 @@ export default {
       peoples: [] // 部门负责人
     }
   },
+  computed: {
+    showTitle () {
+      return this.formData.id ? '编辑部门' : '新增部门'
+    }
+  },
   methods: {
     getEmployeeSimple () {
       // this.peoples = getEmployeeSimple() //没有接口用假数据代替
@@ -113,7 +130,13 @@ export default {
     btnOK () {
       this.$refs.deptForm.validate(async isOk => {
         if (isOk) {
-          await addDepartments({ ...this.formData, pid: this.treeNode.id })
+          if (this.formData.id) {
+            // 编辑部门
+            await updateDepartments(this.formData)
+          } else {
+            // 添加部门
+            await addDepartments({ ...this.formData, pid: this.treeNode.id })
+          }
           this.$emit('addDepts')
           // emit语法糖 update:props名称
           this.$emit('update:showDialog', false)
@@ -121,6 +144,13 @@ export default {
       })
     },
     btnCancel () {
+      // 重置数据  因为resetFields 只能重置 表单上的数据 非表单上的 比如 编辑中id 不能重置
+      this.formData = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
       this.$emit('update:showDialog', false)
       // this.showDialog = false
       this.$refs.deptForm.resetFields()
