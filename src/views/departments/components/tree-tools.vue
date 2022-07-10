@@ -46,7 +46,8 @@ export default {
   methods: {
     operateDepts (type) {
       if (type === 'add') {
-        alert(type)
+        // 显示新增部门弹层
+        this.$emit('addDepts', this.treeNode)
       } else if (type === 'edit') {
         alert(type)
       } else {

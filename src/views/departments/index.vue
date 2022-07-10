@@ -3,7 +3,8 @@
     <div class="app-container">
       <el-card>
         <tree-tools :is-root="true"
-                    :tree-node="company" />
+                    :tree-node="company"
+                    @addDepts="addDepts" />
         <el-tree :data="departs"
                  :default-expand-all="true"
                  :props="defaultProps">
@@ -11,10 +12,13 @@
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据   data 每个节点的数据对象-->
           <tree-tools slot-scope="{ data }"
                       :tree-node="data"
-                      @delDepts="getDepartments" />
+                      @delDepts="getDepartments"
+                      @addDepts="addDepts" />
         </el-tree>
         <!-- 放置新增弹层组件 -->
-        <AddDept />
+        <AddDept :show-dialog="showDialog"
+                 :tree-node="node"
+                 @addDepts="getDepartments" />
       </el-card>
     </div>
   </div>
@@ -32,6 +36,8 @@ export default {
   },
   data () {
     return {
+      showDialog: false, // 新增部门dialog是否显示
+      node: null,
       company: {},
       defaultProps: {
         label: 'name'
@@ -45,10 +51,15 @@ export default {
   methods: {
     async getDepartments () {
       const res = await getDepartments()
-      this.company = { name: res.companyName, manager: '负责人' }
+      console.log(res)
+      this.company = { name: res.companyName, manager: '负责人', id: '' }
       // 将list 转换为树形结构
       this.departs = tranListToTreeData(res.depts, '')
-      console.log(res)
+    },
+    addDepts (node) {
+      this.showDialog = true
+      // 记录要添加部门的 父部门
+      this.node = node
     }
   }
 }
