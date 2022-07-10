@@ -1,16 +1,139 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <h2>
-        公司设置
-      </h2>
+      <el-card>
+        <el-tabs>
+          <el-tab-pane label="角色管理">
+            <el-row>
+              <el-button type="primary"
+                         size="small"
+                         icon="el-icon-plus">新增角色</el-button>
+            </el-row>
+            <el-table :border="true"
+                      :data="list">
+              <el-table-column align="center"
+                               type="index"
+                               label="序号"
+                               width="120" />
+              <el-table-column align="center"
+                               prop="name"
+                               label="角色名称"
+                               width="240" />
+              <el-table-column align="center"
+                               prop="description"
+                               label="描述" />
+              <el-table-column align="center"
+                               label="操作">
+                <template slot-scope="{row}">
+                  <el-button size="small"
+                             type="success">分配权限</el-button>
+                  <el-button size="small"
+                             type="primary">编辑</el-button>
+                  <el-button size="small"
+                             type="danger"
+                             @click="deleteRole(row.id)">删除</el-button>
+                </template>
+
+              </el-table-column>
+            </el-table>
+            <!-- 分页组件 -->
+            <el-row type="flex"
+                    justify="center"
+                    align="middle"
+                    style="height: 60px">
+              <el-pagination layout="prev, pager, next"
+                             :total="page.total"
+                             :current-page="page.page"
+                             :page-size="page.pagesize"
+                             @current-change="changePage" />
+            </el-row>
+          </el-tab-pane>
+          <el-tab-pane label="用户信息">
+            <el-form label-width="120px"
+                     style="margin-top:50px">
+              <el-form-item label="公司名称">
+                <el-input v-model="formData.name"
+                          disabled
+                          style="width:400px" />
+              </el-form-item>
+              <el-form-item label="公司地址">
+                <el-input v-model="formData.companyAddress"
+                          disabled
+                          style="width:400px" />
+              </el-form-item>
+              <el-form-item label="邮箱">
+                <el-input v-model="formData.mailbox"
+                          disabled
+                          style="width:400px" />
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input v-model="formData.remarks"
+                          type="textarea"
+                          :rows="3"
+                          disabled
+                          style="width:400px" />
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
     </div>
   </div>
 </template>
 
 <script>
-export default {
+import { getRoleList, getCompanyInfo, deleteRole } from '@/api/setting'
+import { mapGetters } from 'vuex'
 
+export default {
+  computed: {
+    ...mapGetters(['companyId'])
+  },
+  data () {
+    return {
+      // 角色列表
+      list: [],
+      page: {
+        // 放置页码及相关数据
+        page: 1,
+        pagesize: 2,
+        total: 0 // 记录总数
+      },
+      formData: {} // 公司信息
+    }
+  },
+  created () {
+    this.getRoleList()
+    this.getCompanyInfo()
+  },
+  methods: {
+    async getRoleList () {
+      const { total, rows } = await getRoleList(this.page)
+      this.list = rows
+      this.page.total = total
+    },
+    changePage (newPage) {
+      // newPage是当前点击的页码
+      this.page.page = newPage // 将当前页码赋值给当前的最新页码
+      this.getRoleList()
+    },
+    async getCompanyInfo () {
+      const formData = await getCompanyInfo(this.companyId)
+      console.log(formData)
+      this.formData = formData
+    },
+    // 删除角色
+    async deleteRole (id) {
+      try {
+        await this.$confirm('确认删除该角色吗')
+        await deleteRole(id)
+        this.getRoleList()
+        this.$message.success('删除角色成功')
+      } catch (error) {
+        this.$message.info('取消删除角色')
+      }
+    }
+  }
 }
 </script>
 
