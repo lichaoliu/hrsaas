@@ -14,6 +14,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import Components from '@/components'
 
 import * as directives from '@/directives'
 
@@ -29,6 +30,7 @@ Object.keys(directives).forEach(key => {
 })
 
 Vue.config.productionTip = false
+Vue.use(Components)
 
 new Vue({
   el: '#app',
