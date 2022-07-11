@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       <page-tools :show-before="true">
-        <span slot="before">共166条记录</span>
+        <span slot="before">共{{ page.total }}条记录</span>
         <div slot="after">
           <el-button type="success">导入</el-button>
           <el-button type="danger">导出</el-button>
@@ -10,21 +10,30 @@
         </div>
       </page-tools>
       <el-card>
-        <el-table :border="true">
+        <el-table v-loading="loading"
+                  :border="true"
+                  :data="list">
           <el-table-column label="序号"
-                           sortable="" />
+                           sortable=""
+                           type="index" />
           <el-table-column label="姓名"
-                           sortable="" />
+                           sortable=""
+                           prop="username" />
           <el-table-column label="工号"
-                           sortable="" />
+                           sortable=""
+                           prop="workNumber" />
           <el-table-column label="聘用形式"
-                           sortable="" />
+                           sortable=""
+                           prop="formOfEmployment" />
           <el-table-column label="部门"
-                           sortable="" />
+                           sortable=""
+                           prop="departmentName" />
           <el-table-column label="入职时间"
-                           sortable="" />
+                           sortable=""
+                           prop="timeOfEntry" />
           <el-table-column label="账户状态"
-                           sortable="" />
+                           sortable=""
+                           prop="enableState" />
           <el-table-column label="操作"
                            sortable=""
                            fixed="right"
@@ -49,7 +58,11 @@
                 justify="center"
                 align="middle"
                 style="height: 60px">
-          <el-pagination layout="prev, pager, next" />
+          <el-pagination layout="prev, pager, next"
+                         :current-page="page.page"
+                         :page-size="page.size"
+                         :total="page.total"
+                         @current-change="changePage" />
         </el-row>
       </el-card>
 
@@ -58,9 +71,35 @@
 </template>
 
 <script>
-import PageTools from '@/components/PageTools/index.vue'
+import { getEmployeeList } from '@/api/employees'
 export default {
-  components: { PageTools }
+  data () {
+    return {
+      loading: false,
+      list: [],
+      page: {
+        page: 1,
+        size: 4,
+        total: 0
+      }
+    }
+  },
+  created () {
+    this.getEmployeeList()
+  },
+  methods: {
+    async getEmployeeList () {
+      this.loading = true
+      const { total, rows } = await getEmployeeList(this.page)
+      this.page.total = total
+      this.list = rows
+      this.loading = false
+    },
+    changePage (newPage) {
+      this.page.page = newPage
+      this.getEmployeeList()
+    }
+  }
 }
 </script>
 
