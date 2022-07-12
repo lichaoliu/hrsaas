@@ -24,9 +24,14 @@
       </el-form-item>
       <el-form-item label="聘用形式"
                     prop="formOfEmployment">
-        <el-input v-model="formData.formOfEmployment"
-                  style="width:50%"
-                  placeholder="请选择" />
+        <el-select v-model="formData.formOfEmployment"
+                   style="width:50%"
+                   placeholder="请选择">
+          <el-option v-for="item in EmployeeEnum.hireType"
+                     :key="item.id"
+                     :label="item.value"
+                     :value="item.id" />
+        </el-select>
       </el-form-item>
       <el-form-item label="工号"
                     prop="workNumber">
@@ -43,7 +48,8 @@
         <el-tree v-if="showTree"
                  v-loading="loading"
                  :data="treeData"
-                 :props="{label: 'name'}" />
+                 :props="{label: 'name'}"
+                 @node-click="selectNode" />
       </el-form-item>
       <el-form-item label="转正时间"
                     prop="correctionTime">
@@ -67,6 +73,7 @@
 <script>
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils/index'
+import EmployeeEnum from '@/api/constant/employees'
 
 export default {
   props: {
@@ -77,6 +84,7 @@ export default {
   },
   data () {
     return {
+      EmployeeEnum,
       formData: {
         username: '',
         mobile: '',
@@ -95,6 +103,7 @@ export default {
         }],
         formOfEmployment: [{ required: true, message: '聘用形式不能为空', trigger: 'blur' }],
         workNumber: [{ required: true, message: '工号不能为空', trigger: 'blur' }],
+        // 要用change 因为blur失去焦点 去el-tree选择数据的时候，input为空
         departmentName: [{ required: true, message: '部门不能为空', trigger: 'change' }],
         timeOfEntry: [{ required: true, message: '入职时间', trigger: 'blur' }]
       },
@@ -109,6 +118,10 @@ export default {
       const { depts } = await getDepartments()
       this.treeData = tranListToTreeData(depts, '')
       this.loading = false
+    },
+    selectNode (node) {
+      this.formData.departmentName = node.name
+      this.showTree = false
     }
   }
 }
