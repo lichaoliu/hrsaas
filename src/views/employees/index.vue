@@ -79,7 +79,8 @@
         </el-row>
       </el-card>
       <!-- 放置弹层组件 -->
-      <AddEmployee :show-dialog="showDialog" />
+      <AddEmployee :show-dialog.sync="showDialog"
+                   @refreshTableAndClose="refreshTableAndClose" />
     </div>
   </div>
 </template>
@@ -134,6 +135,10 @@ export default {
     },
     addEmployee () {
       this.showDialog = true
+    },
+    refreshTableAndClose () {
+      this.getEmployeeList()
+      this.showDialog = false
     }
   }
 }

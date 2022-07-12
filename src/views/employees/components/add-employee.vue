@@ -1,7 +1,9 @@
 <template>
   <el-dialog title="新增员工"
-             :visible="showDialog">
-    <el-form label-width="120px"
+             :visible="showDialog"
+             @close="btnCancel">
+    <el-form ref="addEmployee"
+             label-width="120px"
              :model="formData"
              :rules="rules">
       <el-form-item label="姓名"
@@ -62,9 +64,11 @@
             type="flex"
             justify="center">
       <el-col :span="6">
-        <el-button size="small">取消</el-button>
         <el-button size="small"
-                   type="primary">确定</el-button>
+                   @click="btnCancel">取消</el-button>
+        <el-button size="small"
+                   type="primary"
+                   @click="btnOk">确定</el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -74,6 +78,7 @@
 import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils/index'
 import EmployeeEnum from '@/api/constant/employees'
+import { addEmployee } from '@/api/employees'
 
 export default {
   props: {
@@ -122,6 +127,32 @@ export default {
     selectNode (node) {
       this.formData.departmentName = node.name
       this.showTree = false
+    },
+    async btnOk () {
+      try {
+        await this.$refs.addEmployee.validate()
+        await addEmployee(this.formData)
+        // 刷新列表
+        // this.$parent.getEmployeeList()
+        // this.$parent.showDialog = false
+        this.$emit('refreshTableAndClose')
+        this.$message.success('添加员工成功')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    btnCancel () {
+      this.formData = {
+        username: '',
+        mobile: '',
+        formOfEmployment: '',
+        workNumber: '',
+        departmentName: '',
+        timeOfEntry: '',
+        correctionTime: ''
+      }
+      this.$refs.addEmployee.resetFields() // 重置表单校验结果
+      this.$emit('update:showDialog', false)
     }
   }
 }
