@@ -24,21 +24,32 @@
                            prop="workNumber" />
           <el-table-column label="聘用形式"
                            sortable=""
+                           :formatter="formatEmployment"
                            prop="formOfEmployment" />
           <el-table-column label="部门"
                            sortable=""
                            prop="departmentName" />
+          <!-- 作用于插槽 + 过滤器 -->
           <el-table-column label="入职时间"
                            sortable=""
-                           prop="timeOfEntry" />
+                           prop="timeOfEntry">
+            <template slot-scope="{row}">
+              {{ row.timeOfEntry | formatDate }}
+            </template>
+          </el-table-column>
           <el-table-column label="账户状态"
                            sortable=""
-                           prop="enableState" />
+                           prop="enableState">
+            <template slot-scope="{row}">
+              <el-switch :value="row.enableState === 1" />
+            </template>
+
+          </el-table-column>
           <el-table-column label="操作"
                            sortable=""
                            fixed="right"
                            width="280">
-            <template>
+            <template slot-scope="{row}">
               <el-button type="text"
                          size="small">查看</el-button>
               <el-button type="text"
@@ -50,7 +61,8 @@
               <el-button type="text"
                          size="small">角色</el-button>
               <el-button type="text"
-                         size="small">删除</el-button>
+                         size="small"
+                         @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -65,14 +77,19 @@
                          @current-change="changePage" />
         </el-row>
       </el-card>
-
+      <!-- 放置弹层组件 -->
+      <AddEmployee />
     </div>
   </div>
 </template>
 
 <script>
-import { getEmployeeList } from '@/api/employees'
+import { getEmployeeList, delEmployee } from '@/api/employees'
+import EmployeeEnum from '@/api/constant/employees'
+import AddEmployee from './components/add-employee.vue'
+
 export default {
+  components: { AddEmployee },
   data () {
     return {
       loading: false,
@@ -98,6 +115,20 @@ export default {
     changePage (newPage) {
       this.page.page = newPage
       this.getEmployeeList()
+    },
+    formatEmployment (row, column, cellValue, index) {
+      const obj = EmployeeEnum.hireType.find(x => x.id === cellValue)
+      return obj ? obj.value : '未知'
+    },
+    async delEmployee (id) {
+      try {
+        await this.$confirm('是否确定删除员工?')
+        await delEmployee(id)
+        this.getEmployeeList()
+        this.$message.success('删除员工成功')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

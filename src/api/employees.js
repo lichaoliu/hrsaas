@@ -18,3 +18,13 @@ export function getEmployeeList(params) {
     params
   })
 }
+
+/**
+ * 获取员工的综合列表数据
+ * ***/
+export function delEmployee(id) {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'delete'
+  })
+}

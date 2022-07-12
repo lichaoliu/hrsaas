@@ -17,6 +17,7 @@ import '@/permission' // permission control
 import Components from '@/components'
 
 import * as directives from '@/directives'
+import * as filters from '@/filters'
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, {
@@ -27,6 +28,9 @@ Vue.use(ElementUI, {
 
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
+})
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 
 Vue.config.productionTip = false
