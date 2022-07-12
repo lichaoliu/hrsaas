@@ -6,7 +6,8 @@
         <div slot="after">
           <el-button type="success">导入</el-button>
           <el-button type="danger">导出</el-button>
-          <el-button type="primary">新增员工</el-button>
+          <el-button type="primary"
+                     @click="addEmployee">新增员工</el-button>
         </div>
       </page-tools>
       <el-card>
@@ -78,7 +79,7 @@
         </el-row>
       </el-card>
       <!-- 放置弹层组件 -->
-      <AddEmployee />
+      <AddEmployee :show-dialog="showDialog" />
     </div>
   </div>
 </template>
@@ -98,7 +99,8 @@ export default {
         page: 1,
         size: 4,
         total: 0
-      }
+      },
+      showDialog: false
     }
   },
   created () {
@@ -129,6 +131,9 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    addEmployee () {
+      this.showDialog = true
     }
   }
 }
