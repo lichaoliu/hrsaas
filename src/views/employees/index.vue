@@ -6,7 +6,8 @@
         <div slot="after">
           <el-button type="success"
                      @click="$router.push('/import')">导入</el-button>
-          <el-button type="danger">导出</el-button>
+          <el-button type="danger"
+                     @click="exportData">导出</el-button>
           <el-button type="primary"
                      @click="addEmployee">新增员工</el-button>
         </div>
@@ -90,6 +91,7 @@
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './components/add-employee.vue'
+import { formatDate } from '@/filters'
 
 export default {
   components: { AddEmployee },
@@ -140,6 +142,48 @@ export default {
     refreshTableAndClose () {
       this.getEmployeeList()
       this.showDialog = false
+    },
+    exportData () {
+      import('@/vendor/Export2Excel').then(async excel => {
+        const headers = {
+          '手机号': 'mobile',
+          '姓名': 'username',
+          '入职日期': 'timeOfEntry',
+          '聘用形式': 'formOfEmployment',
+          '转正日期': 'correctionTime',
+          '工号': 'workNumber',
+          '部门': 'departmentName'
+        }
+        const { rows } = await getEmployeeList({ page: 1, size: this.page.total })
+        const data = this.formatJson(headers, rows)
+        excel.export_json_to_excel({
+          header: Object.keys(headers),
+          data: data,
+          filename: '员工表',
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      })
+    },
+    formatJson (headers, rows) {
+      return rows.map(item => {
+        return Object.keys(headers).map(key => {
+          // 英文key
+          const headerValue = headers[key]
+          // 导出的值
+          const value = item[headers[key]]
+          // 日期格式化
+          if (headerValue === 'timeOfEntry' || headerValue === 'correctionTime') {
+            return formatDate(value)
+          }
+          // 正式 非正式
+          if (headerValue === 'formOfEmployment') {
+            const obj = EmployeeEnum.hireType.find(o => o.id === value)
+            return obj ? obj.value : '未知'
+          }
+          return value
+        })
+      })
     }
   }
 }
