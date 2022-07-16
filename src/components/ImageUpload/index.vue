@@ -2,7 +2,7 @@
     <div>
         <!-- 给action一个#就不会报错了 -->
         <el-upload list-type="picture-card" :file-list="fileList" :limit="1" action="#" :on-preview="preview"
-            :on-change="changeFile" :class="{ disabled: fileComputed }" :on-remove="handleRemove"
+            :on-change="changeFile" :class="{ disabled: fileComputed }" :on-remove="handleRemove" :http-request="upload"
             :before-upload="beforeUpload">
             <i class="el-icon-plus"></i>
         </el-upload>
@@ -15,6 +15,11 @@
 
 </template>
 <script>
+import COS from 'cos-js-sdk-v5'
+const cos = new COS({
+    SecretId: 'AKIDWrwlKdfQu73j8H9kbGelcCWZLr76oFPJ',
+    SecretKey: 'e190c2EF2ZqpY0C6j5BzWljRs1tUqvjH'
+})
 export default {
     computed: {
         // 属性判断是否已经上传了一张图片
@@ -54,6 +59,17 @@ export default {
                 return false
             }
             return true
+        },
+        upload(params) {
+            cos.putObject({
+                Bucket: 'nevermore-1302091042', /* 填入您自己的存储桶，必须字段 */
+                Region: 'ap-beijing',  /* 存储桶所在地域，例如ap-beijing，必须字段 */
+                Key: params.file.name,  /* 存储在桶里的对象键（例如1.jpg，a/b/test.txt），必须字段 */
+                StorageClass: 'STANDARD',
+                Body: params.file
+            }, function (err, data) {
+                console.log(err || data);
+            })
         }
     }
 }
