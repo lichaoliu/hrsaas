@@ -74,7 +74,8 @@
               <el-button type="text"
                          size="small">离职</el-button>
               <el-button type="text"
-                         size="small">角色</el-button>
+                         size="small"
+                         @click="editRole(row.id)">角色</el-button>
               <el-button type="text"
                          size="small"
                          @click="delEmployee(row.id)">删除</el-button>
@@ -103,6 +104,10 @@
           <canvas ref="myCanvas" />
         </el-row>
       </el-dialog>
+      <!-- 角色弹框 -->
+      <assign-role ref="assignRole"
+                   :show-role-dialog.sync="showRoleDialog"
+                   :user-id="userId" />
     </div>
   </div>
 </template>
@@ -113,9 +118,10 @@ import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './components/add-employee.vue'
 import { formatDate } from '@/filters'
 import QrCode from 'qrcode'
+import AssignRole from './components/assign-role.vue'
 
 export default {
-  components: { AddEmployee },
+  components: { AddEmployee, AssignRole },
   data () {
     return {
       loading: false,
@@ -126,7 +132,9 @@ export default {
         total: 0
       },
       showDialog: false,
-      showCodeDialog: false
+      showCodeDialog: false,
+      showRoleDialog: false, // 编辑用户角色
+      userId: ''
     }
   },
   created () {
@@ -221,6 +229,11 @@ export default {
       } else {
         this.$message.warning('该用户还未上传头像')
       }
+    },
+    async editRole (id) {
+      this.userId = id // props 赋值是异步的
+      await this.$refs.assignRole.getUserDetailById(id)
+      this.showRoleDialog = true
     }
   }
 }

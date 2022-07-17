@@ -84,7 +84,6 @@ export function updatePersonal(data) {
   })
 }
 
-
 /** **
  * 获取用户的岗位信息
  *
@@ -95,7 +94,6 @@ export function getJobDetail(id) {
   })
 }
 
-
 /**
  * 保存岗位信息
  * ****/
@@ -104,5 +102,16 @@ export function updateJob(data) {
     url: `/employees/${data.userId}/jobs`,
     method: 'put',
     data
+  })
+}
+
+/** *
+ * 给用户分配角色
+ * ***/
+export function assignRoles(data) {
+  return request({
+    url: '/sys/user/assignRoles',
+    data,
+    method: 'put'
   })
 }
