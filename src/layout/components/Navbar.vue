@@ -14,7 +14,7 @@
       <el-dropdown class="avatar-container"
                    trigger="click">
         <div class="avatar-wrapper">
-          <img v-imgerror="defaultImg"
+          <img v-imageerror="defaultImg"
                :src="staffPhoto"
                class="user-avatar">
           <span class="name">{{ name }}</span>
