@@ -35,8 +35,7 @@
     </div>
     <!-- 新增编辑弹层 -->
     <el-dialog :title="shwoText"
-               :visible="showDialog"
-               :close="btnCancel">
+               :visible="showDialog">
       <el-form ref="perForm"
                :model="formData"
                :rules="rules">
@@ -68,7 +67,7 @@
                      size="small"
                      @click="btnOK">确定</el-button>
           <el-button size="small"
-                     @click="btnCancel">取消</el-button>
+                     type="btnCancel">取消</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -100,7 +99,7 @@ export default {
   },
   computed: {
     shwoText () {
-      return this.formData.id ? '编辑权限' : '添加权限'
+      return this.formData.id ? '新增权限' : '编辑权限'
     }
   },
   created () {
@@ -146,7 +145,7 @@ export default {
         enVisible: '0' // 开启
       }
       this.$refs.perForm.resetFields()
-      this.showDialog = false
+      this.$
     },
     async editPermission (id) {
       this.formData = await getPermissionDetail(id)

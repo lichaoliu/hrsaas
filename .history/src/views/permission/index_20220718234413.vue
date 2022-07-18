@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     shwoText () {
-      return this.formData.id ? '编辑权限' : '添加权限'
+      return this.formData.id ? '编辑权限' : '编辑权限'
     }
   },
   created () {
