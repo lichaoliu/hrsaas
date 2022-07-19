@@ -243,10 +243,8 @@ export default {
       this.showPermDialog = true
     },
     async btnPermOK () {
-      const obj = { permIds: this.$refs.permTree.getCheckedKeys(), id: this.roleId }
-      console.log('============')
-      console.log(obj)
-      await assignPerm(obj)
+      const ob
+      await assignPerm({ permIds: this.$refs.permTree.getCheckedKeys(), id: this.roleId })
       this.$message.success('分配权限成功')
       this.showPermDialog = false
     },

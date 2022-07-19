@@ -244,7 +244,7 @@ export default {
     },
     async btnPermOK () {
       const obj = { permIds: this.$refs.permTree.getCheckedKeys(), id: this.roleId }
-      console.log('============')
+      log
       console.log(obj)
       await assignPerm(obj)
       this.$message.success('分配权限成功')

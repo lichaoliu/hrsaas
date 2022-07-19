@@ -239,14 +239,15 @@ export default {
       this.roleId = id
       const { permIds } = await getRoleDetail(id) // permIds是当前角色所拥有的权限点数据
       this.selectCheck = permIds
-      console.log(this.roleId)
+      console.log(this.permData)
+      console.log(this.selectCheck)
       this.showPermDialog = true
     },
     async btnPermOK () {
-      const obj = { permIds: this.$refs.permTree.getCheckedKeys(), id: this.roleId }
-      console.log('============')
-      console.log(obj)
-      await assignPerm(obj)
+      console.log(this.$refs.permTree.getCheckedKeys())
+      console.log(this.rol);
+      const t = await assignPerm({ permIds: this.$refs.permTree.getCheckedKeys(), id: this.roleId })
+      console.log(t)
       this.$message.success('分配权限成功')
       this.showPermDialog = false
     },

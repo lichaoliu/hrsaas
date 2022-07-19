@@ -111,10 +111,8 @@
         </el-dialog>
       </el-card>
     </div>
-    <el-dialog :visible="showPermDialog"
-               @close="btnPermCancel">
-      <el-tree ref="permTree"
-               :data="permData"
+    <el-dialog :visible="showPermDialog">
+      <el-tree :data="permData"
                :props="defaultProps"
                :default-expand-all="true"
                node-key="id"
@@ -239,16 +237,12 @@ export default {
       this.roleId = id
       const { permIds } = await getRoleDetail(id) // permIds是当前角色所拥有的权限点数据
       this.selectCheck = permIds
-      console.log(this.roleId)
+      console.log(this.permData)
+      console.log(this.selectCheck)
       this.showPermDialog = true
     },
-    async btnPermOK () {
-      const obj = { permIds: this.$refs.permTree.getCheckedKeys(), id: this.roleId }
-      console.log('============')
-      console.log(obj)
-      await assignPerm(obj)
-      this.$message.success('分配权限成功')
-      this.showPermDialog = false
+    btnPermOK () {
+      this.assignPerm()
     },
     btnPermCancel () {
       this.selectCheck = []

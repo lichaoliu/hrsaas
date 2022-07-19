@@ -60,6 +60,14 @@ export function addRole(data) {
   })
 }
 
+export function assignPerm(data) {
+  return request({
+    url: '/sys/role/assignPerm',
+    method: 'put',
+    data
+  })
+}
+
 // 给角色分配权限
 export function assignPerm(data) {
   return request({
