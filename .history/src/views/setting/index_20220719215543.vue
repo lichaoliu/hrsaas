@@ -27,8 +27,7 @@
                                label="操作">
                 <template slot-scope="{row}">
                   <el-button size="small"
-                             type="success"
-                             @click="assignPerm(row.id)">分配权限</el-button>
+                             type="success">分配权限</el-button>
                   <el-button size="small"
                              type="primary"
                              @click="editRole(row.id)">编辑</el-button>
@@ -111,22 +110,9 @@
         </el-dialog>
       </el-card>
     </div>
-    <el-dialog :visible="showPermDialog">
-      <el-tree :data="permData"
-               :props="defaultProps"
-               :default-expand-all="true"
-               node-key="id"
-               :default-checked-keys="selectCheck"
-               :show-checkbox="true"
-               :check-strictly="true" />
-      <el-row slot="footer"
-              type="flex"
-              justify="center">
-        <el-col :span="6">
-          <el-button type="primary"
-                     size="small">确定</el-button>
-          <el-button size="small">取消</el-button>
-        </el-col>
+    <el-dialog>
+      <el-row>
+        <el-co
       </el-row>
     </el-dialog>
   </div>
@@ -135,8 +121,6 @@
 <script>
 import { getRoleList, getCompanyInfo, deleteRole, getRoleDetail, updateRole, addRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
-import { tranListToTreeData } from '@/utils'
-import { getPermissionList } from '@/api/permisson'
 
 export default {
   computed: {
@@ -158,14 +142,7 @@ export default {
       roleForm: {},
       rules: {
         name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }]
-      },
-      showPermDialog: false,
-      defaultProps: {
-        label: 'name'
-      },
-      permData: [], // 专门用来接收权限数据 树形数据
-      selectCheck: [], // 角色拥有的权限
-      roleId: null
+      }
     }
   },
   created () {
@@ -208,6 +185,7 @@ export default {
       try {
         await this.$refs.roleForm.validate()
         if (this.roleForm.id) {
+          console.log('11111111')
           await updateRole(this.roleForm)
         } else {
           // 新增业务
@@ -228,17 +206,6 @@ export default {
       // 移除校验
       this.$refs.roleForm.resetFields()
       this.showDialog = false
-    },
-    // 分配权限
-    async assignPerm (id) {
-      this.permData = tranListToTreeData(await getPermissionList(), '0')
-      this.roleId = id
-      const { permIds } = await getRoleDetail(id) // permIds是当前角色所拥有的权限点数据
-      console.log('=======')
-      this.selectCheck = permIds
-      console.log(this.permData)
-      console.log(this.selectCheck)
-      this.showPermDialog = true
     }
   }
 }

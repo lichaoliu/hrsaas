@@ -116,7 +116,7 @@
                :props="defaultProps"
                :default-expand-all="true"
                node-key="id"
-               :default-checked-keys="selectCheck"
+               :default-expanded-keys="selectCheck"
                :show-checkbox="true"
                :check-strictly="true" />
       <el-row slot="footer"

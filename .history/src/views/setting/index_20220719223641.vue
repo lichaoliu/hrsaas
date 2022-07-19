@@ -114,11 +114,11 @@
     <el-dialog :visible="showPermDialog">
       <el-tree :data="permData"
                :props="defaultProps"
-               :default-expand-all="true"
+               default-expand-all
                node-key="id"
-               :default-checked-keys="selectCheck"
+               :default-expanded-keys="selectCheck"
                :show-checkbox="true"
-               :check-strictly="true" />
+               :check-strictly="false" />
       <el-row slot="footer"
               type="flex"
               justify="center">
@@ -234,10 +234,9 @@ export default {
       this.permData = tranListToTreeData(await getPermissionList(), '0')
       this.roleId = id
       const { permIds } = await getRoleDetail(id) // permIds是当前角色所拥有的权限点数据
-      console.log('=======')
+      log
+      console.log(permIds);
       this.selectCheck = permIds
-      console.log(this.permData)
-      console.log(this.selectCheck)
       this.showPermDialog = true
     }
   }

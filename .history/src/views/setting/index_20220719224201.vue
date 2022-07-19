@@ -112,13 +112,14 @@
       </el-card>
     </div>
     <el-dialog :visible="showPermDialog">
-      <el-tree :data="permData"
+      <el-tree ref="permTree"
+               :data="permData"
                :props="defaultProps"
-               :default-expand-all="true"
-               node-key="id"
-               :default-checked-keys="selectCheck"
                :show-checkbox="true"
-               :check-strictly="true" />
+               :check-strictly="true"
+               :default-expand-all="true"
+               :default-checked-keys="selectCheck"
+               node-key="id" />
       <el-row slot="footer"
               type="flex"
               justify="center">
