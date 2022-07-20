@@ -1,0 +1,3 @@
+import {
+  constantRoutes
+} from '@/router'

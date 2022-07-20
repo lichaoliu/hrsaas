@@ -17,15 +17,9 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // 有token 跳转其他页面的时候,如果没有用户资料,获取用户资料
       if (!store.getters.userId) {
-        const {
-          roles
-        } = await store.dispatch('user/getUserInfo')
-        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
-        router.addRoutes(routes) // 添加动态路由到路由表
-        next(to.path)
-      } else {
-        next()
+        const {roles} = await store.dispatch('user/getUserInfo')
       }
+      next()
     }
   } else {
     // 没有token

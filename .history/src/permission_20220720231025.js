@@ -20,12 +20,13 @@ router.beforeEach(async (to, from, next) => {
         const {
           roles
         } = await store.dispatch('user/getUserInfo')
-        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+        const routes = store.dispatch('permission/filterRoutes', roles.menus)
         router.addRoutes(routes) // 添加动态路由到路由表
         next(to.path)
-      } else {
-        next()
+      }else{
+        
       }
+      next()
     }
   } else {
     // 没有token

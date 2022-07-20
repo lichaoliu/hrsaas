@@ -12,8 +12,7 @@ const store = new Vuex.Store({
   modules: {
     app,
     settings,
-    user,
-    permission
+    user
   },
   getters
 })
