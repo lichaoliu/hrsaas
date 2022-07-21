@@ -30,12 +30,12 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'sidebar', 'routes'
+      'sidebar'
     ]),
-    // routes () {
-    //   // 获取当前路由表 这个地方不会响应式变化
-    //   return this.$router.options.routes
-    // },
+    routes () {
+      // 获取当前路由表 这个地方不会响应式变化
+      return this.$router.options.routes
+    },
     activeMenu () {
       const route = this.$route
       const { meta, path } = route

@@ -97,7 +97,7 @@ const createRouter = () => new Router({
   scrollBehavior: () => ({
     y: 0
   }),
-  routes: [...constantRoutes] // , ...asyncRoutes 删除添加的动态路由
+  routes: [...constantRoutes, ...asyncRoutes]
 })
 
 const router = createRouter()
