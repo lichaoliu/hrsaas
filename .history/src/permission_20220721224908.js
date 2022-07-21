@@ -27,6 +27,8 @@ router.beforeEach(async (to, from, next) => {
           redirect: '/404',
           hidden: true
         }]) // 添加动态路由到路由表
+
+
         next(to.path)
       } else {
         next()

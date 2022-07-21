@@ -10,10 +10,6 @@ import {
   getUserDetailById
 } from '@/api/user'
 
-import {
-  resetRouter
-} from '@/router'
-
 const state = {
   token: getToken(), // 设置token 初始化的时候，优先从缓存获取
   userInfo: {}
@@ -47,12 +43,6 @@ const actions = {
   logout(context) {
     context.commit('removeToken')
     context.commit('removeUserInfo')
-    // 重置路由
-    resetRouter()
-    // 设置静态路由
-    context.commit('permission/setRoutes', [], {
-      root: true
-    })
   },
   // 设置用户信息
   async getUserInfo(context) {

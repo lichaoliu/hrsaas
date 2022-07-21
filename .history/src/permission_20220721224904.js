@@ -21,13 +21,14 @@ router.beforeEach(async (to, from, next) => {
           roles
         } = await store.dispatch('user/getUserInfo')
         const routes = await store.dispatch('permission/filterRoutes', roles.menus)
-        // 404 page must be placed at the end !!!
         router.addRoutes([...routes, {
-          path: '*',
-          redirect: '/404',
-          hidden: true
-        }]) // 添加动态路由到路由表
-        next(to.path)
+            path: '*',
+            redirect: '/404',
+            hidden: true
+          }]) // 添加动态路由到路由表
+          
+
+          next(to.path)
       } else {
         next()
       }

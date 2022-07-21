@@ -50,9 +50,7 @@ const actions = {
     // 重置路由
     resetRouter()
     // 设置静态路由
-    context.commit('permission/setRoutes', [], {
-      root: true
-    })
+    context.commit('permission')
   },
   // 设置用户信息
   async getUserInfo(context) {

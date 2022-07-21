@@ -48,11 +48,6 @@ const actions = {
     context.commit('removeToken')
     context.commit('removeUserInfo')
     // 重置路由
-    resetRouter()
-    // 设置静态路由
-    context.commit('permission/setRoutes', [], {
-      root: true
-    })
   },
   // 设置用户信息
   async getUserInfo(context) {
