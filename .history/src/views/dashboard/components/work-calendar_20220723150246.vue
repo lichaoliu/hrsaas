@@ -1,0 +1,12 @@
+<template>
+  <div>
+    <el-row type="flex"
+            justify="end">
+      <el-sl
+    </el-row>
+  </div>
+</template>
+<script>
+</script>
+<style>
+</style>

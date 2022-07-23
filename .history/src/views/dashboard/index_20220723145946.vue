@@ -29,7 +29,6 @@
             <span>工作日历</span>
           </div>
           <!-- 放置日历组件 -->
-          <WorkCalendar />
         </el-card>
         <!-- 公告 -->
         <el-card class="box-card">
@@ -134,7 +133,7 @@ import WorkCalendar from './components/work-calendar.vue'
 
 export default {
   name: 'Dashboard',
-  components: { WorkCalendar },
+  com
   data () {
     return {
       defaultImg: require('@/assets/common/head.jpg')

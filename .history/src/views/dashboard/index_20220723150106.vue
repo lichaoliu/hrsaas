@@ -29,7 +29,7 @@
             <span>工作日历</span>
           </div>
           <!-- 放置日历组件 -->
-          <WorkCalendar />
+          <WorkCalendar></WorkCalendar>
         </el-card>
         <!-- 公告 -->
         <el-card class="box-card">
