@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 export function imgDownload(data) {
+  debugger
   return request({
     url: `/system/upfile/${data.id}`
   })
@@ -22,3 +23,4 @@ export function getCityList() {
     url: '/sys/city'
   })
 }
+

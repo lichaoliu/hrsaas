@@ -202,7 +202,7 @@ export default {
     btnOK () {
       this.$refs.ruleForm.validate(async isOk => {
         if (isOk) {
-          await startProcess({ ...this.ruleForm, userId: this.userInfo.userId, username: this.userInfo.username })
+          await startProcess.apply({ ...this.ruleForm, userId: this.userInfo.userId, username: this.userInfo.username })
           this.$message.success('离职申请提交成功')
         }
       })

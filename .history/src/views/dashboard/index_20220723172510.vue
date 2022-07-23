@@ -82,10 +82,8 @@
             <el-button class="sideBtn"
                        @click="showDialog=true">加班离职</el-button>
             <el-button class="sideBtn">请假调休</el-button>
-            <el-button class="sideBtn"
-                       @click="$router.push('/users/approvals')">审批列表</el-button>
-            <el-button class="sideBtn"
-                       @click="$router.push('/users/info')">我的信息</el-button>
+            <el-button class="sideBtn">审批列表</el-button>
+            <el-button class="sideBtn">我的信息</el-button>
           </div>
         </el-card>
 
@@ -129,8 +127,7 @@
       </el-col>
     </el-row>
     <!-- 离职弹层 -->
-    <el-dialog :visible="showDialog"
-               @close="btnCancel">
+    <el-dialog :visible="showDialog">
       <el-form ref="ruleForm"
                :model="ruleForm"
                label-width="110px"
@@ -200,10 +197,9 @@ export default {
   },
   methods: {
     btnOK () {
-      this.$refs.ruleForm.validate(async isOk => {
+      this.$refs.ruleForm.validate(isOk => {
         if (isOk) {
-          await startProcess({ ...this.ruleForm, userId: this.userInfo.userId, username: this.userInfo.username })
-          this.$message.success('离职申请提交成功')
+          startProcess.apply({ ...this.ruleForm, userId: this.userInfo.userId,this.username:this.userInfo.userId })
         }
       })
     },
