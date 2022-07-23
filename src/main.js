@@ -18,7 +18,9 @@ import Components from '@/components'
 
 import * as directives from '@/directives'
 import * as filters from '@/filters'
+import checkPermission from '@/mixin/checkPermission'
 
+Vue.mixin(checkPermission)
 // set ElementUI lang to EN
 Vue.use(ElementUI, {
   locale
