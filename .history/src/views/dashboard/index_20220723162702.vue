@@ -93,7 +93,6 @@
             <span>绩效指数</span>
           </div>
           <!-- 放置雷达图 -->
-          <Radar />
         </el-card>
         <!-- 帮助连接 -->
         <el-card class="box-card">
@@ -132,11 +131,11 @@
 import { mapGetters, createNamespacedHelpers } from 'vuex'
 const { mapState } = createNamespacedHelpers('user')
 import WorkCalendar from './components/work-calendar.vue'
-import Radar from './components/radar.vue'
+import Radar from './components/work-calendar.vue'
 
 export default {
   name: 'Dashboard',
-  components: { WorkCalendar, Radar },
+  components: { WorkCalendar },
   data () {
     return {
       defaultImg: require('@/assets/common/head.jpg')
