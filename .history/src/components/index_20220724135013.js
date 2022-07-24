@@ -16,6 +16,5 @@ export default {
     Vue.component('Screenfull', Screenfull)
     Vue.component('ThemePicker', ThemePicker)
     Vue.component('LangSelect', LangSelect)
-    Vue.component('TagsView', TagsView)
   }
 }
