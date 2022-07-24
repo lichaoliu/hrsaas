@@ -2,7 +2,7 @@ import PageTools from '@/components/PageTools'
 import UploadExcel from '@/components/UploadExcel'
 import ImageUpload from '@/components/ImageUpload'
 import Print from 'vue-print-nb'
-import Screenfull from './ScreenFull'
+import Screenfull from 'screenfull'
 
 export default {
   install(Vue) {
@@ -10,6 +10,5 @@ export default {
     Vue.component('UploadExcel', UploadExcel)
     Vue.component('ImageUpload', ImageUpload)
     Vue.use(Print)
-    Vue.component('Screenfull', Screenfull)
   }
 }

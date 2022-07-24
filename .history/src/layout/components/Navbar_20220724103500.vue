@@ -12,7 +12,7 @@
 
     <div class="right-menu">
       <!-- 全屏组件 -->
-      <Screenfull class="right-menu-item" />
+      <screen-full class="right-menu-item" />
       <el-dropdown class="avatar-container"
                    trigger="click">
         <div class="avatar-wrapper">

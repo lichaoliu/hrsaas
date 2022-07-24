@@ -2,7 +2,7 @@ import PageTools from '@/components/PageTools'
 import UploadExcel from '@/components/UploadExcel'
 import ImageUpload from '@/components/ImageUpload'
 import Print from 'vue-print-nb'
-import Screenfull from './ScreenFull'
+import Screenfull from '@/components/ScreenFull'
 
 export default {
   install(Vue) {

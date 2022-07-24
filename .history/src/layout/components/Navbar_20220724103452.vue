@@ -12,7 +12,7 @@
 
     <div class="right-menu">
       <!-- 全屏组件 -->
-      <Screenfull class="right-menu-item" />
+      <screen-full class="right-menu-item" />
       <el-dropdown class="avatar-container"
                    trigger="click">
         <div class="avatar-wrapper">
@@ -139,12 +139,13 @@ export default {
     }
 
     .right-menu-item {
+      vertical-align: middle;
       display: inline-block;
       padding: 0 8px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: middle;
+      vertical-align: text-bottom;
 
       &.hover-effect {
         cursor: pointer;

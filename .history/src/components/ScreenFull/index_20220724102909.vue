@@ -1,0 +1,9 @@
+<template>
+  <div>
+		<svg-icon></svg-icon>
+  </div>
+</template>
+<script>
+</script>
+<style>
+</style>
